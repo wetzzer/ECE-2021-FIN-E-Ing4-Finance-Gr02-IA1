@@ -16,17 +16,17 @@ namespace Suduku.RecursiveSearch
 
         public bool Resolve(GrilleSudoku s)
         {
-            for (int row = 0; row < Size; row++)
+            for (int ligne = 0; ligne < Size; ligne++)
             {
                 for (int col = 0; col < Size; col++)
                 {
-                    if (s.GetCellule(row, col) == 0) // empty
+                    if (s.GetCellule(ligne, col) == 0) // empty
                     {
-                        for (int guess = 1; guess <= 9; guess++)
+                        for (int value = 1; value <= 9; value++)
                         {
-                            if (IsValid(s, row, col, guess))
+                            if (IsValid(s, ligne, col, value))
                             {
-                                s.SetCell(row, col, guess);
+                                s.SetCell(ligne, col, value);
 
                                 if (Resolve(s))
                                 {
@@ -34,7 +34,7 @@ namespace Suduku.RecursiveSearch
                                 }
                                 else
                                 {
-                                    s.SetCell(row, col, 0);
+                                    s.SetCell(ligne, col, 0);
                                 }
                             }
                         }
@@ -47,18 +47,18 @@ namespace Suduku.RecursiveSearch
             return true;
         }
 
-        private bool IsValid(GrilleSudoku s, int row, int col, int guess)
+        private bool IsValid(GrilleSudoku s, int ligne, int col, int value)
         {
-            return IsRowValid(s,row, guess) &&
-                   IsColValid(s,col, guess) &&
-                   IsSquareValid(s,row, col, guess);
+            return IsLigneValid(s, ligne, value) &&
+                   IsCarreValid(s, ligne, col, value) &&
+                   IsColValid(s, col, value);
         }
 
-        private bool IsRowValid(GrilleSudoku s, int row, int guess)
+        private bool IsLigneValid(GrilleSudoku s, int ligne, int value)
         {
             for (var col = 0; col < Size; col++)
             {
-                if (s.GetCellule(row, col) == guess)
+                if (s.GetCellule(ligne, col) == value)
                 {
                     return false;
                 }
@@ -67,11 +67,11 @@ namespace Suduku.RecursiveSearch
             return true;
         }
 
-        private bool IsColValid(GrilleSudoku s, int col, int guess)
+        private bool IsColValid(GrilleSudoku s, int col, int value)
         {
-            for (var row = 0; row < Size; row++)
+            for (var ligne = 0; ligne < Size; ligne++)
             {
-                if (s.GetCellule(row, col) == guess)
+                if (s.GetCellule(ligne, col) == value)
                 {
                     return false;
                 }
@@ -80,16 +80,16 @@ namespace Suduku.RecursiveSearch
             return true;
         }
 
-        private bool IsSquareValid(GrilleSudoku s, int row, int col, int guess)
+        private bool IsCarreValid(GrilleSudoku s, int ligne, int col, int value)
         {
-            var r = row - row % 3;
+            var l = ligne - ligne % 3;
             var c = col - col % 3;
 
-            for (var i = r; i < r + 3; i++)
+            for (var i = l; i < l + 3; i++)
             {
                 for (var j = c; j < c + 3; j++)
                 {
-                    if (s.GetCellule(i, j) == guess)
+                    if (s.GetCellule(i, j) == value)
                     {
                         return false;
                     }
