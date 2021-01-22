@@ -10,6 +10,41 @@ namespace Sudoku.TechniquesHumaines
 {
     public class TechniquesHumainesSolver : ISudokuSolver
     {
+        public void Solve(GrilleSudoku s)
+        {
+            var board = new List<List<int>>();
+            foreach(var i in Enumerable.Range(0, 9))
+            {
+                var ro = new List<int>(9);
+                foreach (var j in Enumerable.Range(0, 9))
+                {
+                    ro.Add(s.GetCellule(j, i));
+
+                }
+                board.Add(ro);
+
+            }
+            var boardArray = board.Select(r => r.ToArray()).ToArray();
+            var puzzle = new Puzzle(boardArray,false);
+            var solver = new Solver(puzzle);
+            var e = new DoWorkEventArgs(null);
+            solver.DoWork(this, e);
+            foreach (var i in Enumerable.Range(0, 9))
+            {
+      
+                foreach (var j in Enumerable.Range(0, 9))
+                {
+
+                    s.SetCell(i, j, puzzle.Rows[i][j].Value);
+                }
+                
+
+            }
+        }
+    }
+
+    internal sealed class Solver
+    {
         private sealed class SolverTechnique
         {
             public Func<Puzzle, bool> Function { get; }
@@ -50,10 +85,6 @@ namespace Sudoku.TechniquesHumaines
         public Solver(Puzzle puzzle)
         {
             Puzzle = puzzle;
-        }
-
-        public TechniquesHumainesSolver()
-        {
         }
 
         public void DoWork(object sender, DoWorkEventArgs e)
@@ -1089,10 +1120,7 @@ namespace Sudoku.TechniquesHumaines
             return DoNakedTuples(0, new Cell[amount], new int[amount]);
         }
 
-        public void Solve(GrilleSudoku s)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 
 }
