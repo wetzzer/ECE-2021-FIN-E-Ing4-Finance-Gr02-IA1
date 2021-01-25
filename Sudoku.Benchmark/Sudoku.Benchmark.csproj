@@ -16,5 +16,6 @@
     <ProjectReference Include="..\Sudoku.Core\Sudoku.Core.csproj" />
     <ProjectReference Include="..\Sudoku.DancingLink\Sudoku.DancingLink.csproj" />
     <ProjectReference Include="..\Sudoku.Norvig\Sudoku.Norvig.csproj" />
+    <ProjectReference Include="..\Sudoku.TechniquesHumaines\Sudoku.TechniquesHumaines.csproj" />
   </ItemGroup>
 </Project>
