@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sudoku.Core;
 
 namespace Suduku.RecursiveSearch
@@ -14,40 +15,43 @@ namespace Suduku.RecursiveSearch
 
         }
 
-        public bool Resolve(GrilleSudoku s)
+        public bool Resolve(GrilleSudoku s)  // La fonction solve va pemettre de choisir la solution valide satsifaisant les contraintes de sodoku
         {
-            for (int ligne = 0; ligne < Size; ligne++)
+            for (int ligne = 0; ligne < Size; ligne++)  // parcourt les lignes
             {
-                for (int col = 0; col < Size; col++)
+                for (int col = 0; col < Size; col++)  // parcourt les colonnes 
                 {
-                    if (s.GetCellule(ligne, col) == 0) // empty
+                    // Ce double for parcourt chaque colonne pour une ligne donnée
+                    if (s.GetCellule(ligne, col) == 0) // empty: si la cellule est vide alors on va rentrer dans la boucle for
                     {
-                        for (int value = 1; value <= 9; value++)
+                        for (int value = 1; value <= 9; value++) // qui va tester les valeur de 1 à 9
                         {
-                            if (IsValid(s, ligne, col, value))
+                            if (IsValid(s, ligne, col, value)) // Si la valeur est valide avec les conditions de validité qu'on va définirapres dans le code
                             {
-                                s.SetCell(ligne, col, value);
 
-                                if (Resolve(s))
+                                s.SetCell(ligne, col, value); // Alors on remplie la case vide avec la valeur valide
+
+                                if (Resolve(s))  // Et on appelle la fonction elle-meme pour la récursivité : Principe de backtracking
                                 {
-                                    return true;
+                                    return true; // On on valide la solution
                                 }
                                 else
                                 {
-                                    s.SetCell(ligne, col, 0);
+                                    s.SetCell(ligne, col, 0);  // Sinon on réinitialise la valeur à 0
                                 }
                             }
                         }
 
-                        return false;
+                        return false; // On refait le même processus
                     }
                 }
             }
 
-            return true;
+            return true; // Jusqu'à ce qu'on trouve une solution valide et on la garde
         }
 
         private bool IsValid(GrilleSudoku s, int ligne, int col, int value)
+        //appel les trois fonctions
         {
             return IsLigneValid(s, ligne, value) &&
                    IsCarreValid(s, ligne, col, value) &&
@@ -56,6 +60,7 @@ namespace Suduku.RecursiveSearch
 
         private bool IsLigneValid(GrilleSudoku s, int ligne, int value)
         {
+
             for (var col = 0; col < Size; col++)
             {
                 if (s.GetCellule(ligne, col) == value)
