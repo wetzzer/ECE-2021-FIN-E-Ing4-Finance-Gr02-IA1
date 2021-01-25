@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Sudoku.Core;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using CsvHelper;
 using Keras;
 using Keras.Models;
 using Python.Runtime;
-using Sudoku.Core;
 using Numpy;
 
 namespace CNNAlgorithm

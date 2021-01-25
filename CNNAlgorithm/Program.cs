@@ -1,15 +1,6 @@
 ﻿using System;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using CsvHelper;
 using Humanizer;
-using Keras;
-using Keras.Models;
-using Numpy;
-using Python.Runtime;
 
 namespace CNNAlgorithm
 {
