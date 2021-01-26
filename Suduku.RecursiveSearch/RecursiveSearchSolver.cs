@@ -16,7 +16,7 @@ namespace Suduku.RecursiveSearch
         }
 
         public bool Resolve(GrilleSudoku s)  // La fonction solve va pemettre de choisir la solution valide satsifaisant les contraintes de sodoku
-        {
+        { //debut de resol
             for (int ligne = 0; ligne < Size; ligne++)  // parcourt les lignes
             {
                 for (int col = 0; col < Size; col++)  // parcourt les colonnes 
