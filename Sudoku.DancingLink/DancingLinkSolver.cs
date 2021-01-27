@@ -11,16 +11,25 @@ namespace Sudoku.DancingLink
     {
         public void Solve(GrilleSudoku s)
         {
-            var grid = new Grid(ImmutableList.Create(
-                "6 4 9 7 3",
-                "  3    6 ",
-                "       18",
-                "   18   9",
-                "     43  ",
-                "7   39   ",
-                " 7       ",
-                " 4    8  ",
-                "9 8 6 4 5"));
+            var sRows = new List<string>();
+            var cols = Enumerable.Range(0, 9);
+            for (int i = 0; i < 9; i++)
+            {
+                sRows.Add(string.Concat(cols.Select(c => s.GetCellule(i, c))
+                    .Select(val => val == 0 ? " " : val.ToString())));
+            }
+            //var grid = new Grid(ImmutableList.Create(
+            //    "6 4 9 7 3",
+            //    "  3    6 ",
+            //    "       18",
+            //    "   18   9",
+            //    "     43  ",
+            //    "7   39   ",
+            //    " 7       ",
+            //    " 4    8  ",
+            //    "9 8 6 4 5"));
+
+            var grid = new Grid(ImmutableList.Create(sRows.ToArray()));
 
             grid.Draw();
 
@@ -31,7 +40,7 @@ namespace Sudoku.DancingLink
                 .Where(solution => VerifySolution(internalRows, solution))
                 .ToImmutableList();
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
             if (solutions.Any())
             {
@@ -179,6 +188,5 @@ namespace Sudoku.DancingLink
         {
             SolutionToGrid(internalRows, solution).Draw();
         }
-    }
     }
 }
