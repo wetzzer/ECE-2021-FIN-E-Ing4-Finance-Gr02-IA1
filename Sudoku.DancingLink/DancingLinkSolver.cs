@@ -179,6 +179,6 @@ namespace Sudoku.DancingLink
         {
             SolutionToGrid(internalRows, solution).Draw();
         }
-    }
+    
     }
 }
