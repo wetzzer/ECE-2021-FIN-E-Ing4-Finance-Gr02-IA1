@@ -32,15 +32,13 @@ namespace Sudoku.DancingLink
             var grid = new Grid(ImmutableList.Create(sRows.ToArray()));
 
             grid.Draw();
-
+            
             var internalRows = BuildInternalRowsForGrid(grid);
             var dlxRows = BuildDlxRows(internalRows);
             var solutions = new Dlx()
                 .Solve(dlxRows, d => d, r => r)
                 .Where(solution => VerifySolution(internalRows, solution))
                 .ToImmutableList();
-
-            //Console.WriteLine();
 
             if (solutions.Any())
             {
@@ -53,6 +51,7 @@ namespace Sudoku.DancingLink
             {
                 Console.WriteLine("No solutions found!");
             }
+            
         }
         private static IEnumerable<int> Rows => Enumerable.Range(0, 9);
         private static IEnumerable<int> Cols => Enumerable.Range(0, 9);

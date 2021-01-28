@@ -60,7 +60,25 @@ namespace Sudoku.DancingLink
             DrawSeparatorLine(CornerBottomLeft, CornerBottomRight, HorizontalAndUp);
         }
 
-        private static readonly Encoding Encoding850 = Encoding.GetEncoding(850);
+        public List<int> GetTableau()
+        {
+            var tab = new List<int>();
+            int cmpt = 0;
+            for (int row=0; row < 9; row++)
+            {
+                for(int col = 0; col < 9; col++)
+                {
+                    cmpt++;
+                    tab[cmpt] = ValueAt(row, col);
+                }
+            }
+            return tab;
+        }
+
+        //private static readonly Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        //var enc1252 = CodePagesEncodingProvider.Instance.GetEncoding(1252);
+        private static readonly Encoding Encoding850 = CodePagesEncodingProvider.Instance.GetEncoding(850);
+       // private static readonly Encoding Encoding850 = Encoding.GetEncoding(850);
         private static readonly string CornerTopLeft = Encoding850.GetString(new byte[] { 218 });
         private static readonly string CornerTopRight = Encoding850.GetString(new byte[] { 191 });
         private static readonly string CornerBottomLeft = Encoding850.GetString(new byte[] { 192 });
