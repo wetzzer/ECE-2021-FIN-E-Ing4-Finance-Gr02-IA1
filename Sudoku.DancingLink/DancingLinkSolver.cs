@@ -7,9 +7,9 @@ using Sudoku.Core;
 
 namespace Sudoku.DancingLink
 {
-    public class DancingLinkSolver : ISudokuSolver
+    class DancingLinkSolver : ISudokuSolver
     {
-        public void Solve(GrilleSudoku s)
+        public void Solve(Sudoku.Core.GrilleSudoku s)
         {
             var sRows = new List<string>();
             var cols = Enumerable.Range(0, 9);
@@ -31,27 +31,17 @@ namespace Sudoku.DancingLink
 
             var grid = new Grid(ImmutableList.Create(sRows.ToArray()));
 
-            grid.Draw();
-            
+            Console.WriteLine("test");
             var internalRows = BuildInternalRowsForGrid(grid);
             var dlxRows = BuildDlxRows(internalRows);
             var solutions = new Dlx()
                 .Solve(dlxRows, d => d, r => r)
                 .Where(solution => VerifySolution(internalRows, solution))
                 .ToImmutableList();
+            Console.WriteLine(solutions);
+            Console.WriteLine(SolutionToGrid(internalRows, solutions.First(), s));
+            s = SolutionToGrid(internalRows, solutions.First(), s);
 
-            if (solutions.Any())
-            {
-                Console.WriteLine($"First solution (of {solutions.Count}):");
-                Console.WriteLine();
-                DrawSolution(internalRows, solutions.First());
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.WriteLine("No solutions found!");
-            }
-            
         }
         private static IEnumerable<int> Rows => Enumerable.Range(0, 9);
         private static IEnumerable<int> Cols => Enumerable.Range(0, 9);
@@ -167,10 +157,12 @@ namespace Sudoku.DancingLink
             return false;
         }
 
-        private static Grid SolutionToGrid(
-            IReadOnlyList<Tuple<int, int, int, bool>> internalRows,
-            Solution solution)
+        private static Sudoku.Core.GrilleSudoku SolutionToGrid(
+             IReadOnlyList<Tuple<int, int, int, bool>> internalRows,
+            Solution solution, Sudoku.Core.GrilleSudoku sudoku)
         {
+            List<int> mySudoku = new List<int>();
+            Sudoku.Core.GrilleSudoku mySudokuToGrid = new Sudoku.Core.GrilleSudoku();
             var rowStrings = solution.RowIndexes
                 .Select(rowIndex => internalRows[rowIndex])
                 .OrderBy(t => t.Item1)
@@ -178,14 +170,17 @@ namespace Sudoku.DancingLink
                 .GroupBy(t => t.Item1, t => t.Item3)
                 .Select(value => string.Concat(value))
                 .ToImmutableList();
-            return new Grid(rowStrings);
-        }
+            mySudokuToGrid.Cellules.Clear();
+            for (int i = 0; i < rowStrings.Count; i++)
+            {
+                string line = rowStrings[i].Replace(" ", "0");
+                foreach (char myChar in line)
+                {
+                    mySudokuToGrid.Cellules.Add(int.Parse(myChar.ToString()));
+                }
 
-        private static void DrawSolution(
-            IReadOnlyList<Tuple<int, int, int, bool>> internalRows,
-            Solution solution)
-        {
-            SolutionToGrid(internalRows, solution).Draw();
+            }
+            return mySudokuToGrid;
         }
     }
 }

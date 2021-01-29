@@ -60,19 +60,16 @@ namespace Sudoku.DancingLink
             DrawSeparatorLine(CornerBottomLeft, CornerBottomRight, HorizontalAndUp);
         }
 
-        public List<int> GetTableau()
+        public List<string> GetTableau()
         {
-            var tab = new List<int>();
-            int cmpt = 0;
-            for (int row=0; row < 9; row++)
+            var sRows = new List<string>();
+            var cols = Enumerable.Range(0, 9);
+            for (int i = 0; i < 9; i++)
             {
-                for(int col = 0; col < 9; col++)
-                {
-                    cmpt++;
-                    tab[cmpt] = ValueAt(row, col);
-                }
+                sRows.Add(string.Concat(cols.Select(c => ValueAt(i, c))
+                    .Select(val => val == 0 ? " " : val.ToString())));
             }
-            return tab;
+            return sRows;
         }
 
         //private static readonly Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
