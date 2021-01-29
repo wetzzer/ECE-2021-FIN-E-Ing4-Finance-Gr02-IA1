@@ -30,19 +30,23 @@ namespace Sudoku.DancingLink
             //    "9 8 6 4 5"));
 
             var grid = new Grid(ImmutableList.Create(sRows.ToArray()));
-
-            Console.WriteLine("test");
             var internalRows = BuildInternalRowsForGrid(grid);
             var dlxRows = BuildDlxRows(internalRows);
             var solutions = new Dlx()
                 .Solve(dlxRows, d => d, r => r)
                 .Where(solution => VerifySolution(internalRows, solution))
                 .ToImmutableList();
-            Console.WriteLine(solutions);
-            Console.WriteLine(SolutionToGrid(internalRows, solutions.First(), s));
-            s = SolutionToGrid(internalRows, solutions.First(), s);
+            var grille = SolutionToGrid(internalRows, solutions[0]);
+            for (int rowIndex = 0; rowIndex < 9; rowIndex++)
+            {
+                for (int coIndex = 0; coIndex < 9; coIndex++)
+                {
+                    s.SetCell(rowIndex, coIndex, grille.ValueAt(rowIndex, coIndex));
+                }
+            }
 
         }
+
         private static IEnumerable<int> Rows => Enumerable.Range(0, 9);
         private static IEnumerable<int> Cols => Enumerable.Range(0, 9);
         private static IEnumerable<Tuple<int, int>> Locations =>
@@ -157,12 +161,10 @@ namespace Sudoku.DancingLink
             return false;
         }
 
-        private static Sudoku.Core.GrilleSudoku SolutionToGrid(
-             IReadOnlyList<Tuple<int, int, int, bool>> internalRows,
-            Solution solution, Sudoku.Core.GrilleSudoku sudoku)
+        private static Grid SolutionToGrid(
+            IReadOnlyList<Tuple<int, int, int, bool>> internalRows,
+            Solution solution)
         {
-            List<int> mySudoku = new List<int>();
-            Sudoku.Core.GrilleSudoku mySudokuToGrid = new Sudoku.Core.GrilleSudoku();
             var rowStrings = solution.RowIndexes
                 .Select(rowIndex => internalRows[rowIndex])
                 .OrderBy(t => t.Item1)
@@ -170,17 +172,7 @@ namespace Sudoku.DancingLink
                 .GroupBy(t => t.Item1, t => t.Item3)
                 .Select(value => string.Concat(value))
                 .ToImmutableList();
-            mySudokuToGrid.Cellules.Clear();
-            for (int i = 0; i < rowStrings.Count; i++)
-            {
-                string line = rowStrings[i].Replace(" ", "0");
-                foreach (char myChar in line)
-                {
-                    mySudokuToGrid.Cellules.Add(int.Parse(myChar.ToString()));
-                }
-
-            }
-            return mySudokuToGrid;
+            return new Grid(rowStrings);
         }
     }
 }
