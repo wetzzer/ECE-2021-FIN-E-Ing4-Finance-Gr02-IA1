@@ -15,7 +15,6 @@ namespace Sudoku.Benchmark
     {
         static void Main()
         {
-            Console.ReadKey();
             Console.WriteLine("Benchmarking GrilleSudoku Solvers");
 
             while (true)
