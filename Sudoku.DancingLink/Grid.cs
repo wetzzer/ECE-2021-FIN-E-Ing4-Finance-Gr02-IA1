@@ -116,6 +116,7 @@ namespace Sudoku.DancingLink
             string part3)
         {
             Console.WriteLine($"{first}{part1}{sep}{part2}{sep}{part3}{last}");
+
         }
     }
 }
