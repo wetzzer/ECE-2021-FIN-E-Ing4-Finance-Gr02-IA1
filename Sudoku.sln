@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.Core", "Sudoku.Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.Benchmark", "Sudoku.Benchmark\Sudoku.Benchmark.csproj", "{89EB5D0A-79B2-46EC-BEF7-FB6EC14DAB8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.TechniquesHumaines", "Sudoku.TechniquesHumaines\Sudoku.TechniquesHumaines.csproj", "{53AB6EE9-48C4-4D82-8F8E-99A29D255D82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.TechniquesHumaines", "Sudoku.TechniquesHumaines\Sudoku.TechniquesHumaines.csproj", "{53AB6EE9-48C4-4D82-8F8E-99A29D255D82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
