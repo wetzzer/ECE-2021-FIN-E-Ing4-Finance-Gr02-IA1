@@ -21,6 +21,7 @@
     <ProjectReference Include="..\CNNAlgorithm\Sudoku.CNNAlgorithm.csproj" />
 
     <ProjectReference Include="..\Suduku.RecursiveSearch\Suduku.RecursiveSearch.csproj" />
+    <ProjectReference Include="..\Sudoku.SwarmInt\Sudoku.SwarmInt.csproj" />
   </ItemGroup>
 
 </Project>
