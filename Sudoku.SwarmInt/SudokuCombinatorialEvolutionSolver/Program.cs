@@ -2,7 +2,7 @@
 
 namespace SudokuCombinatorialEvolutionSolver
 {
-  internal static class Program
+  public static class Program
   {
     private static void Main(string[] args)
     {

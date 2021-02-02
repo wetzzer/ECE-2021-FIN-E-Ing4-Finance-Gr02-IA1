@@ -1,5 +1,4 @@
-﻿using System;
-namespace Sudoku.SwarmInt
+﻿namespace Sudoku.SwarmInt
 {
     public class Organism
     {
@@ -13,7 +12,8 @@ namespace Sudoku.SwarmInt
             Type = type;
             Error = error;
             Age = age;
-            Matrix = MatrixHelper.DuplicateMatrix(m);
+            Matrix = SwarmIntSolver.DuplicateMatrix(m);
         }
     }
+
 }
