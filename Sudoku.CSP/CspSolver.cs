@@ -174,7 +174,7 @@ namespace Sudoku.CSP
                 if (Is_present(S, possibilites, poss, position[val]))
                 {
 
-                    Console.WriteLine("Position :{0} , Possibilitée : {1}", position[val],poss);
+                    //Console.WriteLine("Position :{0} , Possibilitée : {1}", position[val],poss);
                     S.SetCell(ligne, colonne, poss);
 
                     if (BackTracking(S, position, possibilites,val+1))
