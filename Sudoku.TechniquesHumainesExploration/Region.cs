@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Sudoku.TechniquesHumaines
 {
     internal sealed class Region : IEnumerable<Cell>
     {
-        public readonly Cell[] _cells;
+        private readonly Cell[] _cells;
 
         public Cell this[int index] => _cells[index];
 

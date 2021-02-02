@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -256,25 +255,6 @@ namespace Sudoku.TechniquesHumaines
             }
             Actions.Add(action);
         }
-
-        internal int[][] GetBoard(Puzzle myPuzzle)
-        {
-            int[][] board = new int[9][];
-            for (int i = 0; i < 9; i++)
-                board[i] = new int[9];
-            foreach (var i in Enumerable.Range(0, 9))
-            {
-
-                foreach (var j in Enumerable.Range(0, 9))
-                {
-
-                    int value = myPuzzle.Rows[i][j].Value;
-                    board[i][j] = value;
-                }
-            }
-            return board;
-        }
-
     }
 }
 
