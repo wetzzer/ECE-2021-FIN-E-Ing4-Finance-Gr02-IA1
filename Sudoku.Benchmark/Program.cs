@@ -22,6 +22,8 @@ namespace Sudoku.Benchmark
             {
                 try
                 {
+                    ConsoleColor foreground = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Select Mode: \n1-Single Solver Test, \n2-Complete Benchmark (40 s max per sudoku), \n3-Complete Benchmark (5 mn max per GrilleSudoku), \n4-Exit program");
                     var strMode = Console.ReadLine();
                     int.TryParse(strMode, out var intMode);

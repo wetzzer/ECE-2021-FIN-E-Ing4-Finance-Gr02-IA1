@@ -21,8 +21,6 @@ namespace Sudoku.Norvig
                     s.SetCell(r, c, cellules); 
                 }
 
-
-                
                                
             }
 
