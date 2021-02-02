@@ -7,7 +7,7 @@ namespace Sudoku.TechniquesHumaines
 {
     internal sealed class Region : IEnumerable<Cell>
     {
-        private readonly Cell[] _cells;
+        public readonly Cell[] _cells;
 
         public Cell this[int index] => _cells[index];
 
