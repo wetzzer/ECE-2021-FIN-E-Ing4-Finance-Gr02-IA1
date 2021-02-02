@@ -141,7 +141,13 @@ namespace Sudoku.Core
             return output.ToString();
         }
 
-      
+        public List<List<int>> GetVoisins()
+        {
+            return (TousLesVoisinages);
+        }
+
+
+
         public int[] GetPossibilities(int x, int y)
         {
             if (x < 0 || x >= 9 || y < 0 || y >= 9)
@@ -333,5 +339,6 @@ namespace Sudoku.Core
             return NbErrors(originalPuzzle) == 0;
         }
 
+      
     }
 }
