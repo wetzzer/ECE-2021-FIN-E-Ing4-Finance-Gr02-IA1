@@ -23,6 +23,7 @@
 
     <ProjectReference Include="..\Suduku.RecursiveSearch\Suduku.RecursiveSearch.csproj" />
     <ProjectReference Include="..\Sudoku.CSP\Sudoku.CSP.csproj" />
+    <ProjectReference Include="..\Sudoku.SwarmInt\Sudoku.SwarmInt.csproj" />
   </ItemGroup>
 
 </Project>
