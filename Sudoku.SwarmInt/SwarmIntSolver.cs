@@ -16,8 +16,6 @@ namespace Sudoku.SwarmInt
         {
 
 
-
-
             Console.WriteLine("Begin solving Sudoku");
             Console.WriteLine("The problem is: ");
 
@@ -53,8 +51,7 @@ namespace Sudoku.SwarmInt
 
         private int Error(int[][] soln)
         {
-            get
-                {
+            
                 return CountErrors(true) + CountErrors(false);
 
                 int CountErrors(bool countByRow)
@@ -77,33 +74,145 @@ namespace Sudoku.SwarmInt
                     }
 
                     return errors;
+                
                 }
-            }
         }
 
-        public static int[][] Solve(int[][] problem,int numOrganisms, int maxEpochs, int maxRestarts)
-        { }
-        
+        public Sudoku Solve(Sudoku sudoku, int numOrganisms, int maxEpochs, int maxRestarts)
+        {
+            var error = int.MaxValue;
+            Sudoku bestSolution = null;
+            var attempt = 0;
+            while (error != 0 && attempt < maxRestarts)
+            {
+                Console.WriteLine($"Attempt: {attempt}");
+                rnd = new Random(attempt);
+                bestSolution = SolveInternal(sudoku, numOrganisms, maxEpochs);
+                error = bestSolution.Error;
+                ++attempt;
+            }
+
+            return bestSolution;
+        }
+
 
         public static void DisplayMatrix(int[][] matrix) { }
 
 
-        public static int[][] SolveEvo(int[][] problem, int numOrganisms, int maxEpochs)
+        private Sudoku SolveInternal(Sudoku sudoku, int numOrganisms, int maxEpochs)
         {
-            int numWorker = (int)(numOrganisms * 0.90);
-            int numExplorer = numOrganisms - numWorker;
-            Organism[] hive = new Organism[numOrganisms];
-            // Initialize each Organism
-            int epoch = 0;
+            var numberOfWorkers = (int)(numOrganisms * 0.90);
+            var hive = new Organism[numOrganisms];
+
+            var bestError = int.MaxValue;
+            Sudoku bestSolution = null;
+
+            for (var i = 0; i < numOrganisms; ++i)
+            {
+                var organismType = i < numberOfWorkers
+                  ? OrganismType.Worker
+                  : OrganismType.Explorer;
+
+                var randomSudoku = Sudoku.New(SwarmIntSolver.RandomMatrix(rnd, sudoku.CellValues));
+                var err = randomSudoku.Error;
+
+                hive[i] = new Organism(organismType, randomSudoku.CellValues, err, 0);
+
+                if (err >= bestError) continue;
+                bestError = err;
+                bestSolution = Sudoku.New(randomSudoku);
+            }
+
+            var epoch = 0;
             while (epoch < maxEpochs)
             {
-                for (int i = 0; i < numOrganisms; ++i)
+                if (epoch % 1000 == 0)
+                    Console.WriteLine($"Epoch: {epoch}, Best error: {bestError}");
+
+                if (bestError == 0)
+                    break;
+
+                for (var i = 0; i < numOrganisms; ++i)
                 {
-                    // Process each Organism
+                    if (hive[i].Type == OrganismType.Worker)
+                    {
+                        var neighbor = SwarmIntSolver.NeighborMatrix(rnd, sudoku.CellValues, hive[i].Matrix);
+                        var neighborSudoku = Sudoku.New(neighbor);
+                        var neighborError = neighborSudoku.Error;
+
+                        var p = rnd.NextDouble();
+                        if (neighborError < hive[i].Error || p < 0.001)
+                        {
+                            hive[i].Matrix = SwarmIntSolver.DuplicateMatrix(neighbor);
+                            hive[i].Error = neighborError;
+                            if (neighborError < hive[i].Error) hive[i].Age = 0;
+
+                            if (neighborError >= bestError) continue;
+                            bestError = neighborError;
+                            bestSolution = neighborSudoku;
+                        }
+                        else
+                        {
+                            hive[i].Age++;
+                            if (hive[i].Age <= 1000) continue;
+                            var randomSudoku = Sudoku.New(SwarmIntSolver.RandomMatrix(rnd, sudoku.CellValues));
+                            hive[i] = new Organism(0, randomSudoku.CellValues, randomSudoku.Error, 0);
+                        }
+                    }
+                    else
+                    {
+                        var randomSudoku = Sudoku.New(SwarmIntSolver.RandomMatrix(rnd, sudoku.CellValues));
+                        hive[i].Matrix = SwarmIntSolver.DuplicateMatrix(randomSudoku.CellValues);
+                        hive[i].Error = randomSudoku.Error;
+
+                        if (hive[i].Error >= bestError) continue;
+                        bestError = hive[i].Error;
+                        bestSolution = randomSudoku;
+                    }
                 }
-                // Merge best worker with best explorer, increment epoch
+
+                // merge best worker with best explorer into worst worker
+                var bestWorkerIndex = 0;
+                var smallestWorkerError = hive[0].Error;
+                for (var i = 0; i < numberOfWorkers; ++i)
+                {
+                    if (hive[i].Error >= smallestWorkerError) continue;
+                    smallestWorkerError = hive[i].Error;
+                    bestWorkerIndex = i;
+                }
+
+                var bestExplorerIndex = numberOfWorkers;
+                var smallestExplorerError = hive[numberOfWorkers].Error;
+                for (var i = numberOfWorkers; i < numOrganisms; ++i)
+                {
+                    if (hive[i].Error >= smallestExplorerError) continue;
+                    smallestExplorerError = hive[i].Error;
+                    bestExplorerIndex = i;
+                }
+
+                var worstWorkerIndex = 0;
+                var largestWorkerError = hive[0].Error;
+                for (var i = 0; i < numberOfWorkers; ++i)
+                {
+                    if (hive[i].Error <= largestWorkerError) continue;
+                    largestWorkerError = hive[i].Error;
+                    worstWorkerIndex = i;
+                }
+
+                var merged = SwarmIntSolver.MergeMatrices(rnd, hive[bestWorkerIndex].Matrix, hive[bestExplorerIndex].Matrix);
+                var mergedSudoku = Sudoku.New(merged);
+
+                hive[worstWorkerIndex] = new Organism(0, merged, mergedSudoku.Error, 0);
+                if (hive[worstWorkerIndex].Error < bestError)
+                {
+                    bestError = hive[worstWorkerIndex].Error;
+                    bestSolution = mergedSudoku;
+                }
+
+                ++epoch;
             }
-            return bestMatrix;
+
+            return bestSolution;
         }
 
 
@@ -261,6 +370,22 @@ namespace Sudoku.SwarmInt
             var result = new int[m, n];
             return result;
         }
+        public static int[,] MergeMatrices(Random rnd, int[,] m1, int[,] m2)
+    {
+      var result = DuplicateMatrix(m1);
+
+      for (var block = 0; block < 9; ++block)
+      {
+        var pr = rnd.NextDouble();
+        if (!(pr < 0.50)) continue;
+        var corner = Corner(block);
+        for (var i = corner.row; i < corner.row + BLOCK_SIZE; ++i)
+        for (var j = corner.column; j < corner.column + BLOCK_SIZE; ++j)
+          result[i, j] = m2[i, j];
+      }
+
+      return result;
+    }
 
 
     } // Program

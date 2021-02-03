@@ -2,7 +2,7 @@ using System;
 
 namespace SudokuCombinatorialEvolutionSolver
 {
-  public class SudokuSolver
+  public class SudokuSolver 
   {
     private Random _rnd;
 
