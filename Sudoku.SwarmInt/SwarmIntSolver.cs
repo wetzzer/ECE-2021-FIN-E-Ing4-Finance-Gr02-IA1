@@ -15,29 +15,39 @@ namespace Sudoku.SwarmInt
         public void Solve(GrilleSudoku s)
         {
 
-
             Console.WriteLine("Begin solving Sudoku");
             Console.WriteLine("The problem is: ");
-
-            int[][] problem = new int[9][];
             
-            DisplayMatrix(problem);
+            int[][] problem = new int[9][];
+            for (int row = 0; row <= 8; row++)
+            {
+                problem[row] = new int[9];
+                for (int column = 0; column <= 8; column++)
+                {
+                    problem[row][column] = s.GetCellule(row, column);
+                }
+            }
+
+            int[,] tab = new int[9,9];
+            for (int row = 0; row <= 8; row++)
+            {
+                problem[row] = new int[9];
+                for (int column = 0; column <= 8; column++)
+                {
+                    tab[row,column] = s.GetCellule(row, column);
+                }
+            }
+            //DisplayMatrix(problem);
             int numOrganisms = 200;
             int maxEpochs = 5000;
             int maxRestarts = 20;
 
-            int[][] soln = Solve(problem, numOrganisms,maxEpochs, maxRestarts);
+            Sudoku sudo = Sudoku.New(tab);
+            Sudoku soln = Solvette(sudo, numOrganisms,maxEpochs, maxRestarts);
 
             Console.WriteLine("Best solution found: ");
-            for (int row = 0; row <= 8; row++)
-            {​​
-                    problem[row] = new int[9];
-                for (int column = 0; column <= 8; column++)
-                {​​
-                        problem[row][column] = s.GetCellule(row, column);
-                }​​
-            }​​
-            DisplayMatrix(soln);
+
+            //DisplayMatrix(soln);
 
             int err = Error(soln);
             if (err == 0)
@@ -49,9 +59,8 @@ namespace Sudoku.SwarmInt
 
         }
 
-        private int Error(int[][] soln)
+        private int Error(Sudoku soln)
         {
-            
                 return CountErrors(true) + CountErrors(false);
 
                 int CountErrors(bool countByRow)
@@ -74,11 +83,10 @@ namespace Sudoku.SwarmInt
                     }
 
                     return errors;
-                
                 }
         }
 
-        public Sudoku Solve(Sudoku sudoku, int numOrganisms, int maxEpochs, int maxRestarts)
+        public Sudoku Solvette(Sudoku sudoku, int numOrganisms, int maxEpochs, int maxRestarts)
         {
             var error = int.MaxValue;
             Sudoku bestSolution = null;
@@ -96,7 +104,11 @@ namespace Sudoku.SwarmInt
         }
 
 
-        public static void DisplayMatrix(int[][] matrix) { }
+        public static void DisplayMatrix(int[][] matrix)
+        {
+
+
+        }
 
 
         private Sudoku SolveInternal(Sudoku sudoku, int numOrganisms, int maxEpochs)
