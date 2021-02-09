@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.GeneticAlgorithm", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.SwarmInt", "Sudoku.SwarmInt\Sudoku.SwarmInt.csproj", "{9A76E9C8-2344-4D6A-B51C-BA5C07B2A99D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.Z3", "Sudoku.Z3\Sudoku.Z3.csproj", "{F790069C-8A69-46AE-90F4-1AB4F125F714}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{9A76E9C8-2344-4D6A-B51C-BA5C07B2A99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A76E9C8-2344-4D6A-B51C-BA5C07B2A99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A76E9C8-2344-4D6A-B51C-BA5C07B2A99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F790069C-8A69-46AE-90F4-1AB4F125F714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F790069C-8A69-46AE-90F4-1AB4F125F714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F790069C-8A69-46AE-90F4-1AB4F125F714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F790069C-8A69-46AE-90F4-1AB4F125F714}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
