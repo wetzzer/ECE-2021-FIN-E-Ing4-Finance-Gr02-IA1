@@ -5,7 +5,6 @@ using Sudoku.Core;
 namespace Suduku.RecursiveSearch
 {
     public class RecursiveSearchSolver : ISudokuSolver
-
     {
         private const int Size = 9;
 
@@ -51,14 +50,15 @@ namespace Suduku.RecursiveSearch
         }
 
         private bool IsValid(GrilleSudoku s, int ligne, int col, int value)
-        //appel les trois fonctions
         {
             return IsLigneValid(s, ligne, value) &&
                    IsCarreValid(s, ligne, col, value) &&
                    IsColValid(s, col, value);
         }
 
+
         private bool IsLigneValid(GrilleSudoku s, int ligne, int value)
+        //Vérifie que chaque nombre n'apparait qu'une fois sur la ligne
         {
 
             for (var col = 0; col < Size; col++)
@@ -73,6 +73,7 @@ namespace Suduku.RecursiveSearch
         }
 
         private bool IsColValid(GrilleSudoku s, int col, int value)
+        //Vérifie que chaque nombre n'apparait qu'une fois sur la colonne
         {
             for (var ligne = 0; ligne < Size; ligne++)
             {
@@ -86,6 +87,7 @@ namespace Suduku.RecursiveSearch
         }
 
         private bool IsCarreValid(GrilleSudoku s, int ligne, int col, int value)
+        //Vérifie que chaque valeur n'apparait qu'une fois dans le carré 
         {
             var l = ligne - ligne % 3;
             var c = col - col % 3;
@@ -105,6 +107,5 @@ namespace Suduku.RecursiveSearch
         }
     }
 }
-
 
 

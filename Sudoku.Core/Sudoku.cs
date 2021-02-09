@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
 
@@ -41,6 +42,33 @@ namespace Sudoku.Core
         public static readonly List<List<int>> TousLesVoisinages =
             _voisinagesLignes.Concat(_voisinagesColonnes).Concat(_voisinagesBoites).ToList();
 
+
+
+        public static readonly List<List<int>> VoisinagesParCellule;
+        
+
+        static GrilleSudoku()
+        {
+            VoisinagesParCellule = new List<List<int>>();
+            foreach (var indicesCellule in IndicesCellules)
+            {
+                var cellVoisinage = new List<int>();
+                VoisinagesParCellule.Add(cellVoisinage);
+                foreach (var voisinage in TousLesVoisinages)
+                {
+                    if (voisinage.Contains(indicesCellule))
+                    {
+                        foreach (var voisin in voisinage)
+                        {
+                            if (!cellVoisinage.Contains(voisin))
+                            {
+                                cellVoisinage.Add(voisin);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
 
 
@@ -141,7 +169,13 @@ namespace Sudoku.Core
             return output.ToString();
         }
 
-      
+        public List<List<int>> GetVoisins()
+        {
+            return (TousLesVoisinages);
+        }
+
+
+
         public int[] GetPossibilities(int x, int y)
         {
             if (x < 0 || x >= 9 || y < 0 || y >= 9)
@@ -286,10 +320,15 @@ namespace Sudoku.Core
         }
 
 
+        private static IList<ISudokuSolver> _CachedSolvers;
+
         public static IList<ISudokuSolver> GetSolvers()
         {
+            if (_CachedSolvers == null)
+            {
             var solvers = new List<ISudokuSolver>();
 
+                
             foreach (var file in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory))
             {
                 if (file.EndsWith("dll") && !(Path.GetFileName(file).StartsWith("libz3")))
@@ -315,7 +354,10 @@ namespace Sudoku.Core
 
             }
 
-            return solvers;
+                _CachedSolvers = solvers;
+        }
+
+            return _CachedSolvers;
         }
 
 
@@ -333,5 +375,16 @@ namespace Sudoku.Core
             return NbErrors(originalPuzzle) == 0;
         }
 
+        public void setSudoku(int[][] tab)  //Attribue des val au sudoku 
+        {
+      
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    Cellules[(9 * i) + j] = tab[i][j];
+                }
+            }
+        }
     }
 }

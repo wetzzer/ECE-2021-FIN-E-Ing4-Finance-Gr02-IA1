@@ -16,11 +16,14 @@
   <ItemGroup>
     <ProjectReference Include="..\Sudoku.Core\Sudoku.Core.csproj" />
     <ProjectReference Include="..\Sudoku.DancingLink\Sudoku.DancingLink.csproj" />
+    <ProjectReference Include="..\Sudoku.GeneticAlgorithm\Sudoku.GeneticAlgorithm.csproj" />
     <ProjectReference Include="..\Sudoku.Norvig\Sudoku.Norvig.csproj" />
     <ProjectReference Include="..\Sudoku.TechniquesHumaines\Sudoku.TechniquesHumaines.csproj" />
     <ProjectReference Include="..\CNNAlgorithm\Sudoku.CNNAlgorithm.csproj" />
 
     <ProjectReference Include="..\Suduku.RecursiveSearch\Suduku.RecursiveSearch.csproj" />
+    <ProjectReference Include="..\Sudoku.CSP\Sudoku.CSP.csproj" />
+    <ProjectReference Include="..\Sudoku.SwarmInt\Sudoku.SwarmInt.csproj" />
   </ItemGroup>
 
 </Project>
