@@ -8,11 +8,11 @@ namespace Sudoku.Norvig
 {
     public class NorvigSolver : ISudokuSolver
     {
-        private IEnumerable<int> cellIndices = Enumerable.Range(0, 9);
+        private readonly IEnumerable<int> cellIndices = Enumerable.Range(0, 9);
         public void Solve(GrilleSudoku s)
         {
-            var game = String.Concat(s.Cellules.Select(c => (c == 0) ? "." : c.ToString()));
-            var solution = LinqSudokuSolver.Search(LinqSudokuSolver.Parse_grid(game));
+            string game = string.Concat(s.Cellules.Select(c => (c == 0) ? "." : c.ToString()));
+            Dictionary<string, string> solution = LinqSudokuSolver.Search(LinqSudokuSolver.Parse_grid(game));
 
             for (int r = 0; r < cellIndices.Count(); r++) 
             {
@@ -122,8 +122,10 @@ namespace Sudoku.Norvig
             var grid2 = from c in grid where "0.-123456789".Contains(c) select c;
             var values = Squares.ToDictionary(s => s, s => Digits); //To start, every square can be any digit
 
-            foreach (var sd in Zip(Squares, (from s in grid select s.ToString()).ToArray()))
+            string[][] array = Zip(Squares, (from s in grid select s.ToString()).ToArray());
+            for (int i = 0; i < array.Length; i++)
             {
+                string[] sd = array[i];
                 var s = sd[0];
                 var d = sd[1];
 
@@ -450,8 +452,9 @@ namespace Sudoku.Norvig
 .....2.......7...17..3...9.8..7......2.89.6...13..6....9..5.824.....891..........
 3...8.......7....51..............36...2..4....7...........6.13..452...........8..".Split('\n');
 
-            foreach (var game in top95)
+            for (int i= 0; i < top95.Length; i++)
             {
+                string game = top95[i];
                 Console.WriteLine(game);
                 Print_board(Search(Parse_grid(game)));
                 Search(Parse_grid(game));
