@@ -15,7 +15,6 @@ namespace Sudoku.Benchmark
     {
         static void Main()
         {
-
             Console.WriteLine("Benchmarking GrilleSudoku Solvers");
 
             while (true)
@@ -54,12 +53,27 @@ namespace Sudoku.Benchmark
             Console.WriteLine("Select difficulty: 1-Easy, 2-Medium, 3-Hard");
             var strDiff = Console.ReadLine();
             int.TryParse(strDiff, out var intDiff);
-            SudokuDifficulty difficulty = intDiff switch
+            SudokuDifficulty difficulty = SudokuDifficulty.Hard;
+            switch (intDiff)
             {
-                1 => SudokuDifficulty.Easy,
-                2 => SudokuDifficulty.Medium,
-                _ => SudokuDifficulty.Hard
-            };
+                case 1:
+                    difficulty = SudokuDifficulty.Easy;
+                    break;
+                case 2:
+                    difficulty = SudokuDifficulty.Medium;
+                    break;
+                case 3:
+                    difficulty = SudokuDifficulty.Hard;
+                    break;
+                default:
+                    break;
+            }
+            //SudokuDifficulty difficulty = intDiff switch
+            //{
+            //    1 => SudokuDifficulty.Easy,
+            //    2 => SudokuDifficulty.Medium,
+            //    _ => SudokuDifficulty.Hard
+            //};
 
             var sudokus = SudokuHelper.GetSudokus(difficulty);
 
