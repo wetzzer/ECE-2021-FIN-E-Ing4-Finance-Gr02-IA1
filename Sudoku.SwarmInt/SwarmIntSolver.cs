@@ -49,6 +49,17 @@ namespace Sudoku.SwarmInt
 
             //DisplayMatrix(soln);
 
+            //affichage du sudoku
+            Console.WriteLine(soln.ToString());
+            //Reconversion depuis int[,]
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    s.Cellules[row * 9 + column] = soln.CellValues[row, column];
+                }
+            }
+
             int err = Error(soln);
             if (err == 0)
                 Console.WriteLine("Success \n");
@@ -104,11 +115,6 @@ namespace Sudoku.SwarmInt
         }
 
 
-        public static void DisplayMatrix(int[][] matrix)
-        {
-
-
-        }
 
 
         private Sudoku SolveInternal(Sudoku sudoku, int numOrganisms, int maxEpochs)
