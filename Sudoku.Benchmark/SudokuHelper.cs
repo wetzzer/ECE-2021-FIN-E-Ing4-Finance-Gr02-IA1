@@ -44,7 +44,7 @@ namespace Sudoku.Benchmark
                     throw new ApplicationException("couldn't find puzzles directory");
                 }
             } while (puzzlesDirectory == null);
-            string filePath = $@"{puzzlesDirectory}\{fileName}";
+            string filePath = System.IO.Path.Combine(puzzlesDirectory.ToString(), fileName);
             var sudokus = Core.GrilleSudoku.ParseFile(filePath);
             return sudokus;
         }

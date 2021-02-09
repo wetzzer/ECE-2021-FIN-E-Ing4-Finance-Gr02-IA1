@@ -15,25 +15,29 @@ namespace Sudoku.Benchmark
     {
         static void Main()
         {
-
             Console.WriteLine("Benchmarking GrilleSudoku Solvers");
 
             while (true)
             {
                 try
                 {
-                    Console.WriteLine("Select Mode: \n1-Single Solver Test, \n2-Complete Benchmark (40 s max per sudoku), \n3-Complete Benchmark (5 mn max per GrilleSudoku), \n4-Exit program");
+                    Console.WriteLine("Select Mode: \n1-Single Solver Test, \n2-Complete Benchmark (10 s max per sudoku), \n3-Complete Benchmark (5 mn max per GrilleSudoku), \n4-Exit program");
                     var strMode = Console.ReadLine();
                     int.TryParse(strMode, out var intMode);
+                    //Console.SetBufferSize(130, short.MaxValue - 100);
                     switch (intMode)
                     {
                         case 1:
                             SingleSolverTest();
                             break;
                         case 2:
+                            //Init solvers
+                            var temp = new BenchmarkSolvers();
                             BenchmarkRunner.Run<BenchmarkSolvers>();
                             break;
                         case 3:
+                            //Init solvers
+                            var temp2 = new BenchmarkSolvers();
                             BenchmarkRunner.Run<FiveMinutesBenchmarkSolvers>();
                             break;
                         default:
@@ -54,12 +58,27 @@ namespace Sudoku.Benchmark
             Console.WriteLine("Select difficulty: 1-Easy, 2-Medium, 3-Hard");
             var strDiff = Console.ReadLine();
             int.TryParse(strDiff, out var intDiff);
-            SudokuDifficulty difficulty = intDiff switch
+            SudokuDifficulty difficulty = SudokuDifficulty.Hard;
+            switch (intDiff)
             {
-                1 => SudokuDifficulty.Easy,
-                2 => SudokuDifficulty.Medium,
-                _ => SudokuDifficulty.Hard
-            };
+                case 1:
+                    difficulty = SudokuDifficulty.Easy;
+                    break;
+                case 2:
+                    difficulty = SudokuDifficulty.Medium;
+                    break;
+                case 3:
+                    difficulty = SudokuDifficulty.Hard;
+                    break;
+                default:
+                    break;
+            }
+            //SudokuDifficulty difficulty = intDiff switch
+            //{
+            //    1 => SudokuDifficulty.Easy,
+            //    2 => SudokuDifficulty.Medium,
+            //    _ => SudokuDifficulty.Hard
+            //};
 
             var sudokus = SudokuHelper.GetSudokus(difficulty);
 
