@@ -8,6 +8,6 @@ namespace Sudoku.Core
     {
 
         void Solve(GrilleSudoku s);
-
+        
     }
 }

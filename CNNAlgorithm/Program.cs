@@ -10,7 +10,7 @@ namespace CNNAlgorithm
 		{
 
 			var strPathCSV = GetFullPath(@"Dataset\sudoku.csv.gz");
-			var strPathModel = GetFullPath(@"Models\sudoku.model");
+			var strPathModel = @"C:\Users\sosth\source\repos\ECE-2021-FIN-E-Ing4-Finance-Gr02-IA1\CNNAlgorithm\Models\sudoku.model";
 			var nbSudokus = 1000;
 
 			var stopW = Stopwatch.StartNew();

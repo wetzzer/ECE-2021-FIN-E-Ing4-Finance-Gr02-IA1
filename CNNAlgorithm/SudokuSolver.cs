@@ -16,18 +16,20 @@ namespace CNNAlgorithm
     class SudokuSolver : ISudokuSolver
     {
 
-		private const string modelPath = @"..\..\..\..\SolverNeuralNet\Models\sudoku.model";
+		private const string modelPath = @"C:\Users\sosth\source\repos\ECE-2021-FIN-E-Ing4-Finance-Gr02-IA1\CNNAlgorithm\Models\sudoku.model";
 		private static BaseModel model = NeuralNetHelper.LoadModel(modelPath);
 
 
-		public Sudoku.Core.GrilleSudoku Solve(Sudoku.Core.GrilleSudoku s)
+		public GrilleSudoku Solve(Sudoku.Core.GrilleSudoku s)
 		{
 			return NeuralNetHelper.SolveSudoku(s, model);
 		}
 
         void ISudokuSolver.Solve(GrilleSudoku s)
         {
-            throw new NotImplementedException();
+			var suudokuResolu = this.Solve(s);
+			Enumerable.Range(0, 81).ToList().ForEach(i => s.Cellules[i] = suudokuResolu.Cellules[i]);
+            //throw new NotImplementedException();
         }
     }
 
@@ -45,7 +47,7 @@ namespace CNNAlgorithm
 
 		static NeuralNetHelper()
 		{
-			PythonEngine.PythonHome = @"C:\Users\sosth\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Anaconda3 (64-bit)";
+			PythonEngine.PythonHome = @"C:\Users\sosth\AppData\Local\Programs\Python\Python37";
 			Setup.UseTfKeras();
 		}
 
@@ -83,8 +85,8 @@ namespace CNNAlgorithm
 			{
 				var output = model.Predict(features.reshape(1, 9, 9, 1));
 				output = output.squeeze();
-				var prediction = np.argmax(output, axis: 2).reshape(9, 9) + 1;
-				var proba = np.around(np.max(output, axis: new[] { 2 }).reshape(9, 9), 2);
+				var prediction = np.argmax(output, axis: 1).reshape(9, 9) + 1;
+				var proba = np.around(np.max(output, axis: new[] { 1 }).reshape(9, 9), 1);
 
 				features = DeNormalize(features);
 				var mask = features.@equals(0);
@@ -92,13 +94,42 @@ namespace CNNAlgorithm
 				{
 					break;
 				}
-
+			
 				var probNew = proba * mask;
-				var ind = (int)np.argmax(probNew);
-				var (x, y) = ((ind / 9), ind % 9);
-				var val = prediction[x][y];
-				features[x][y] = val;
+				var threshold = 1.0;
+				var ind_list = np.argwhere(probNew >= threshold);
+				
+				while (ind_list.len == 0)
+                {
+					threshold = threshold - 0.1;
+					if (threshold >= 0.5)
+					{
+						ind_list = np.argwhere(probNew >= threshold);
+
+						if (ind_list.len > 0)
+						{
+							break;
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				Console.WriteLine(ind_list);
+				for (int i = 0; i < ind_list.len; i++)
+
+					{
+
+					var x = ind_list[i][0];
+					var  y = ind_list[i][1];
+					var val = prediction[x][y];
+					features[x][y] = val;
+					
+				}
 				features = Normalize(features);
+
 
 			}
 
