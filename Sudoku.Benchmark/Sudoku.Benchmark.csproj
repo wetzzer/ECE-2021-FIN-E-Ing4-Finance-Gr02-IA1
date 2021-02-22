@@ -18,8 +18,10 @@
     <ProjectReference Include="..\Sudoku.DancingLink\Sudoku.DancingLink.csproj" />
     <ProjectReference Include="..\Sudoku.GeneticAlgorithm\Sudoku.GeneticAlgorithm.csproj" />
     <ProjectReference Include="..\Sudoku.Norvig\Sudoku.Norvig.csproj" />
+    <ProjectReference Include="..\Sudoku.Probabilistic\Sudoku.ResolModelGraph.csproj" />
     <ProjectReference Include="..\Sudoku.TechniquesHumaines\Sudoku.TechniquesHumaines.csproj" />
     <ProjectReference Include="..\CNNAlgorithm\Sudoku.CNNAlgorithm.csproj" />
+    <ProjectReference Include="..\Sudoku.Z3\Sudoku.Z3.csproj" />
 
     <ProjectReference Include="..\Suduku.RecursiveSearch\Suduku.RecursiveSearch.csproj" />
     <ProjectReference Include="..\Sudoku.CSP\Sudoku.CSP.csproj" />
